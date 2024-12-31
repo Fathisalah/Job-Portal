@@ -1,0 +1,73 @@
+.job-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.profile-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.payment-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Add these styles to your existing CSS */
+.card {
+    border-radius: 10px;
+    border: none;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.form-control {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.alert {
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.shadow {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Form validation styles */
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Custom checkbox style */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 1rem;
+    }
+} 

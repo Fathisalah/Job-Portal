@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment - Job Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="text-center mb-0">Complete Payment</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h5>Job Application Fee</h5>
+                    <h2>₹{{ application.job.application_fee }}</h2>
+                </div>
+
+                <div class="mb-4">
+                    <h6>Application Details:</h6>
+                    <p class="mb-1">Job Title: {{ application.job.title }}</p>
+                    <p class="mb-1">Company: {{ application.job.employer.company_name }}</p>
+                    <p class="mb-0">Application ID: {{ application.id }}</p>
+                </div>
+
+                <form action="{% url 'payment_verify' %}" method="POST">
+                    {% csrf_token %}
+                    <script
+                        src="https://checkout.razorpay.com/v1/checkout.js"
+                        data-key="{{ razorpay_key }}"
+                        data-amount="{{ amount }}"
+                        data-currency="INR"
+                        data-order_id="{{ order_id }}"
+                        data-buttontext="Pay Now"
+                        data-name="Job Portal"
+                        data-description="Application Fee"
+                        data-prefill.name="{{ request.user.get_full_name }}"
+                        data-prefill.email="{{ request.user.email }}"
+                        data-theme.color="#0d6efd"
+                    ></script>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a href="{% url 'job_detail' application.job.id %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

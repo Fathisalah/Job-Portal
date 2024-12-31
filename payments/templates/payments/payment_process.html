@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment - Job Portal{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Payment Details</h3>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                    <p class="card-text">Application Fee: ${{ payment.amount }}</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <!-- In a real app, add payment form fields here -->
+                        <div class="mb-3">
+                            <label class="form-label">Card Number</label>
+                            <input type="text" class="form-control" value="4242 4242 4242 4242" readonly>
+                            <small class="text-muted">This is a demo payment page</small>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label">Expiry</label>
+                                <input type="text" class="form-control" value="12/25" readonly>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">CVV</label>
+                                <input type="text" class="form-control" value="123" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Pay Now</button>
+                            <a href="{% url 'job_detail' job.id %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

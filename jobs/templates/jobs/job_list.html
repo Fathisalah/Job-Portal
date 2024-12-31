@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Jobs - Job Portal{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{% if is_employer %}My Posted Jobs{% else %}Available Jobs{% endif %}</h2>
+        {% if is_employer %}
+            <a href="{% url 'post_job' %}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Post New Job
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        {% for job in jobs %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ job.employer.company_name }}</h6>
+                    
+                    <div class="mb-3">
+                        <span class="badge bg-secondary me-2">
+                            <i class="fas fa-map-marker-alt"></i> {{ job.location }}
+                        </span>
+                        <span class="badge bg-info">
+                            <i class="fas fa-money-bill-wave"></i> {{ job.salary }}
+                        </span>
+                    </div>
+
+                    <p class="card-text">{{ job.description|truncatewords:50 }}</p>
+
+                    {% if not is_employer %}
+                        {% if job.application_status %}
+                            <div class="alert alert-info mb-3">
+                                Status: 
+                                <span class="badge bg-{{ job.application_status_color }}">
+                                    {{ job.application_status }}
+                                </span>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'job_detail' job.id %}" class="btn btn-primary">
+                                Apply Now
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'job_detail' job.id %}" class="btn btn-info">
+                            View Applications
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    Posted {{ job.created_at|timesince }} ago
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                {% if is_employer %}
+                    You haven't posted any jobs yet.
+                {% else %}
+                    No jobs available at the moment.
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

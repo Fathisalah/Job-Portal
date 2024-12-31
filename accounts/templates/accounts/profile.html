@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Job Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="text-center mb-0">My Profile</h3>
+            </div>
+            <div class="card-body p-4">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" value="{{ user.username }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" name="phone" class="form-control" value="{{ user.userprofile.phone }}">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            {% if user.userprofile.is_employer %}
+                                <div class="mb-3">
+                                    <label class="form-label">Company Name</label>
+                                    <input type="text" name="company_name" class="form-control" value="{{ user.userprofile.company_name }}">
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <label class="form-label">Current Resume</label>
+                                    {% if user.userprofile.resume %}
+                                        <p>Current: {{ user.userprofile.resume.name }}</p>
+                                    {% endif %}
+                                    <input type="file" name="resume" class="form-control">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if user.userprofile.is_employer %}
+            <div class="card shadow mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">My Posted Jobs</h4>
+                </div>
+                <div class="card-body">
+                    {% for job in user.userprofile.job_set.all %}
+                        <div class="job-card mb-3">
+                            <h5>{{ job.title }}</h5>
+                            <p>{{ job.description|truncatewords:30 }}</p>
+                            <div class="text-muted">
+                                <small>Location: {{ job.location }}</small><br>
+                                <small>Posted on: {{ job.created_at|date }}</small>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-center">No jobs posted yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="card shadow mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">My Applications</h4>
+                </div>
+                <div class="card-body">
+                    {% for application in user.userprofile.jobapplication_set.all %}
+                        <div class="job-card mb-3">
+                            <h5>{{ application.job.title }}</h5>
+                            <p class="mb-1">Status: <span class="badge bg-{{ application.status }}">{{ application.status }}</span></p>
+                            <small class="text-muted">Applied on: {{ application.applied_at|date }}</small>
+                        </div>
+                    {% empty %}
+                        <p class="text-center">No applications yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
